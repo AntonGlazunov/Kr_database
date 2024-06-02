@@ -1,25 +1,28 @@
-from src.hh_employer import HH
-from src.vacancy import Vacancy
+def emp_info(vacancies_list):
+    unique_employers = []
+    emp_list_info = []
+    for vacancy in vacancies_list:
+        if vacancy["employer"] not in unique_employers:
+            unique_employers.append(vacancy["employer"])
+    for employer in unique_employers:
+        emp_list_info.append(f"({employer["id"]}, '{employer["name"]}', '{employer["url"]}')")
+    return emp_list_info
 
 
-def search_vacancies(message, user_quantity):
-    """
-    Функция для поиска вакансий по запросу
-    """
-    json_vacancies = HH(user_quantity)
-    json_vacancies.load_vacancies(message)
-    return json_vacancies.vacancies
-
-
-def top_vacancies(number_vacancies):
-    """
-    Функция для возвращает топ N вакансий
-    """
-    if number_vacancies > len(Vacancy.list_object_vacancy):
-        print("""Колличество вакансий для сортировки превышает колличество запрошеных вакансий,
-предоставлен список всех получееых вакансий отсортированых по убыванию зарплат""")
-        Vacancy.sort_vacancy_salary_min()
-        return Vacancy.list_object_vacancy[:number_vacancies]
-    else:
-        Vacancy.sort_vacancy_salary_min()
-        return Vacancy.list_object_vacancy[:number_vacancies]
+def vacancy_info(vacancies_list):
+    vacancies_list_info = []
+    for vacancy in vacancies_list:
+        if vacancy["salary"] is None:
+            vacancy["salary"] = {"from": 0, "to": 0, "currency": "RUR"}
+        if vacancy["salary"].get("from") is None:
+            vacancy["salary"] = {"from": 0, "to": vacancy["salary"]["to"],
+                                 "currency": vacancy["salary"]["currency"]}
+        if vacancy["salary"].get("to") is None:
+            vacancy["salary"] = {"from": vacancy["salary"]["from"], "to": 0,
+                                 "currency": vacancy["salary"]["currency"]}
+        vacancies_list_info.append(f"({vacancy["id"]}, '{vacancy["name"]}', '{vacancy["area"]["name"]}', "
+                                   f"{vacancy["salary"]["from"]}, {vacancy["salary"]["to"]}, "
+                                   f"'{vacancy["salary"]["currency"]}', '{vacancy["published_at"]}', "
+                                   f"'{vacancy["alternate_url"]}', '{vacancy["snippet"]["requirement"]}', "
+                                   f"'{vacancy["snippet"]["responsibility"]}', {vacancy["employer"]["id"]})")
+    return vacancies_list_info

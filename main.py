@@ -1,18 +1,21 @@
 from src.hh_employer import HH
 from src.datebase import DateBase
+from src.utils import emp_info
+from src.utils import vacancy_info
 
 if __name__ == "__main__":
-    a = HH()
-    b = a.load_vacancies()
-    print(a.vacancies)
+    vacancies_from_hh = HH()
+    vacancies_from_hh.load_vacancies()
+    vacancies = vacancies_from_hh.vacancies
+    con_db = DateBase("localhost", "postgres", "200818")
+    con_db.create_db("test")
+    con_db.create_table("emp", ["emp_id int PRIMARY KEY", "name varchar(100) NOT NULL",
+                                "url varchar(100)"])
+    con_db.create_table("vacancy", ["vacancy_id int PRIMARY KEY", "name varchar(100) NOT NULL",
+                                    "area varchar(100)", "salary_min int NOT NULL", "salary_max int NOT NULL",
+                                    "salary_currency varchar(3)", "published_date date", "vacancy_url varchar(100)",
+                                    "requirements text", "description text",
+                                    "emp_id int REFERENCES emp(emp_id) NOT NULL"])
+    con_db.add_info("emp", emp_info(vacancies))
+    con_db.add_info("vacancy", vacancy_info(vacancies))
 
-    c = DateBase("localhost", "postgres", "200818")
-    c.create_db("test")
-    c.create_table("test", ["emp_id int PRIMARY KEY", "title varchar(100) NOT NULL", "vacancy text"])
-
-
-
-    # "host": "localhost",
-    # "dbname": "postgres",
-    # "user": "postgres",
-    # "password": "200818"
