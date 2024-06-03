@@ -7,8 +7,8 @@ if __name__ == "__main__":
     vacancies_from_hh = HH()
     vacancies_from_hh.load_vacancies()
     vacancies = vacancies_from_hh.vacancies
-    con_db = DateBase("localhost", "postgres", "200818")
-    con_db.create_db("test")
+    con_db = DateBase()
+    con_db.create_db("test1")
     con_db.create_table("emp", ["emp_id int PRIMARY KEY", "name varchar(100) NOT NULL",
                                 "url varchar(100)"])
     con_db.create_table("vacancy", ["vacancy_id int PRIMARY KEY", "name varchar(100) NOT NULL",

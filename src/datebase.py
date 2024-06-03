@@ -1,14 +1,10 @@
 import psycopg2
+from src.abstract_class import Communication
 
+class DateBase(Communication):
 
-class DateBase:
-
-    def __init__(self, host, user, password):
-        self.conn_params = {
-            "host": host,
-            "user": user,
-            "password": password
-        }
+    def __init__(self):
+        super().__init__()
 
     def create_db(self, db_name):
         conn = psycopg2.connect(**self.conn_params)
