@@ -23,6 +23,8 @@ def vacancy_info(vacancies_list):
         vacancies_list_info.append(f"({vacancy["id"]}, '{vacancy["name"]}', '{vacancy["area"]["name"]}', "
                                    f"{vacancy["salary"]["from"]}, {vacancy["salary"]["to"]}, "
                                    f"'{vacancy["salary"]["currency"]}', '{vacancy["published_at"]}', "
-                                   f"'{vacancy["alternate_url"]}', '{vacancy["snippet"]["requirement"]}', "
-                                   f"'{vacancy["snippet"]["responsibility"]}', {vacancy["employer"]["id"]})")
+                                   f"'{vacancy["alternate_url"]}', "
+                                   f"'{str(vacancy["snippet"]["requirement"]).replace("'", " ")}', "
+                                   f"'{str(vacancy["snippet"]["responsibility"]).replace("'", " ")}', "
+                                   f"{vacancy["employer"]["id"]})")
     return vacancies_list_info
