@@ -1,8 +1,8 @@
-from src.hh_employer import HH
 from src.datebase import DateBase
+from src.dbmanager import DBManager
+from src.hh_employer import HH
 from src.utils import emp_info
 from src.utils import vacancy_info
-from src.dbmanager import DBManager
 
 if __name__ == "__main__":
     print("Введите название базы данных")
@@ -13,7 +13,7 @@ if __name__ == "__main__":
     con_db = DateBase()
     con_db.create_db(name_db)
     con_db.create_table("employer", ["emp_id int PRIMARY KEY", "emp_name varchar(100) NOT NULL",
-                                "emp_url varchar(100)"])
+                                     "emp_url varchar(100)"])
     con_db.create_table("vacancy", ["vacancy_id int PRIMARY KEY", "vacancy_name varchar(100) NOT NULL",
                                     "area varchar(100)", "salary_min int", "salary_max int",
                                     "salary_currency varchar(3)", "published_date date", "vacancy_url varchar(100)",
@@ -41,4 +41,3 @@ if __name__ == "__main__":
     user_request = input()
     for row in db_manager.get_vacancies_with_keyword(user_request):
         print(row)
-
