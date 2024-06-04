@@ -17,7 +17,7 @@ class DBManager(Communication):
         conn = psycopg2.connect(**self.conn_params)
         cur = conn.cursor()
         conn.autocommit = True
-        cur.execute(f"SELECT emp_name, COUNT(vacancy_id) FROM emp "
+        cur.execute(f"SELECT emp_name, COUNT(vacancy_id) FROM employer "
                     f"JOIN vacancy USING (emp_id) "
                     f"GROUP BY emp_name;")
         all_emp_with_amount_vacancy = cur.fetchall()
@@ -34,7 +34,7 @@ class DBManager(Communication):
         cur = conn.cursor()
         conn.autocommit = True
         cur.execute(f"SELECT vacancy_name, emp_name, salary_min, salary_max, vacancy_url FROM vacancy "
-                    f"JOIN emp USING (emp_id);")
+                    f"JOIN employer USING (emp_id);")
         all_vacancy = cur.fetchall()
         cur.close()
         conn.close()
@@ -80,7 +80,7 @@ class DBManager(Communication):
         conn.autocommit = True
         cur.execute(
             f"SELECT vacancy_name FROM vacancy "
-            f"WHERE salary_max <> AVG(salary_max);")
+            f"WHERE salary_max > (SELECT AVG (salary_max) FROM vacancy);")
         vacancy_list = cur.fetchall()
         cur.close()
         conn.close()

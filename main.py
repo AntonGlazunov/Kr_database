@@ -18,8 +18,27 @@ if __name__ == "__main__":
                                     "area varchar(100)", "salary_min int", "salary_max int",
                                     "salary_currency varchar(3)", "published_date date", "vacancy_url varchar(100)",
                                     "requirements text", "description text",
-                                    "emp_id int REFERENCES emp(emp_id) NOT NULL"])
-    con_db.add_info("emp", emp_info(vacancies))
+                                    "emp_id int REFERENCES employer(emp_id) NOT NULL"])
+    con_db.add_info("employer", emp_info(vacancies))
     con_db.add_info("vacancy", vacancy_info(vacancies))
     db_manager = DBManager(name_db)
+    print("Список компаний и колличество вакансий в компании:")
+    for row in db_manager.get_companies_and_vacancies_count():
+        print(row)
+    print("Список вакансий с указанием компаний, зарплаты и ссылки:")
+    for row in db_manager.get_all_vacancies():
+        print(row)
+    print("Средняя минимальная зарплата:")
+    for row in db_manager.get_avg_salary_min():
+        print(row)
+    print("Средняя максимальная зарплата:")
+    for row in db_manager.get_avg_salary_max():
+        print(row)
+    print("Список вакансий у которых зарплата выше средней")
+    for row in db_manager.get_vacancies_with_higher_salary():
+        print(row)
+    print("Ведите ключевое слово для поиска по вакансиям:")
+    user_request = input()
+    for row in db_manager.get_vacancies_with_keyword(user_request):
+        print(row)
 
